@@ -38,9 +38,9 @@ The `HierarchicalPermutationTest` class implements a **hierarchical resampling (
     * The final **Observed Statistic** is reported as the **median** of this distribution. This ensures the metric is stable and not driven by outliers.
 
 2.  **Hierarchical Resampling (Permutation):**
-    To test if this difference is significant, we need a "Null Distribution" (what the difference would look like by random chance).
-    * **Standard Shuffling (Wrong):** A standard test shuffles all *observations* randomly. This destroys the group structure.
-    * **Hierarchical Shuffling (Correct):** The `NestedKS` class shuffles the **Class Labels** (e.g., the Subject IDs) rather than the individual observations.
+    To test if this difference is significant, we need a null distribution (what the difference would look like by random chance).
+    * **Standard Shuffling:** A standard test shuffles all *observations* randomly. This destroys the group structure.
+    * **Hierarchical Shuffling:** The `NestedKS` class shuffles the **Class Labels** (e.g., the Subject IDs) rather than the individual observations.
         * It keeps all observations from "Subject A" together.
         * It randomly assigns the *entire* "Subject A" group to either the "Control" or "Treatment" bin.
 
