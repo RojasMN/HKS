@@ -1,2 +1,52 @@
 # Hierarchical Kolmogorov-Smirnov (HKS) Test
-Work in progress...
+A Python package for performing a Hierarchical (Nested) Kolmogorov-Smirnov Test. This tool is designed for datasets where observations are not independent but are grouped (e.g., multiple neurons recorded from the same animal), addressing the problem of pseudoreplication.
+
+## 1. Conceptual Background
+
+### The Kolmogorov-Smirnov (KS) Test
+The **Kolmogorov-Smirnov test** is a non-parametric method used to determine if two datasets differ significantly in their underlying distributions. Conceptually, it works by plotting the **Empirical Cumulative Distribution Function (ECDF)** for both datasets—essentially a curve showing the proportion of data points below any given value.
+
+The test statistic ($D$) is simply the **maximum vertical distance** between these two curves. If $D$ is large, the distributions are likely different.
+
+### The Anderson-Darling (AD) Test
+The **Anderson-Darling test** is a modification of the KS test. While the KS test looks only at the *maximum* distance (which often happens near the median/center of the distribution), the Anderson-Darling test uses a weighted distance that places more emphasis on the **tails** (the extremes) of the distribution. It is often more sensitive to differences in the start or end of the distributions.
+
+---
+
+## 2. The Problem: Pseudoreplication in Nested Data
+
+Standard statistical tests (like the standard KS test) assume that every data point is **independent**. However, in biological and scientific data, this is often false.
+
+**Example:**
+* You have 2 groups of mice (Control vs. Treatment).
+* You record 100 neurons from *each* mouse.
+* **Naive approach:** You pool all neurons and compare 500 control neurons vs. 500 treatment neurons.
+* **The Error:** The test treats this as $N = 1000$ independent samples. In reality, you only have $N=10$ mice. The neurons within a single mouse are highly correlated.
+
+This inflation of the effective sample size is called **pseudoreplication**. It causes standard tests to return artificially low p-values, leading you to detect significant differences that don't actually exist (False Positives).
+
+---
+## 3. The Solution: `NestedKS` Class
+
+The `HierarchicalPermutationTest` class implements a **hierarchical resampling (permutation) test** to calculate a valid p-value that respects the grouped structure of your data.
+
+### How it works (`nested_ks.py`)
+
+1.  **Robust Observed Statistic:**
+    Instead of calculating a single KS statistic on the raw data, the class computes a **robust estimate**.
+    * It repeatedly resamples the data (preserving the original group structure).
+    * It calculates the KS (or Anderson-Darling) statistic for each resample.
+    * The final **Observed Statistic** is reported as the **median** of this distribution. This ensures the metric is stable and not driven by outliers or specific sampling artifacts.
+
+2.  **Hierarchical Resampling (Permutation):**
+    To test if this difference is significant, we also need Null Distribution (what the difference would look like by random chance).
+    * **Standard Shuffling (Wrong):** A standard test shuffles all *observations* randomly. This destroys the group structure.
+    * **Hierarchical Shuffling (Correct):** The `NestedKS` class shuffles the **Class Labels** (e.g., the Subject IDs) rather than the individual observations.
+        * It keeps all observations from "Subject A" together.
+        * It randomly assigns the *entire* "Subject A" group to either the "Control" or "Treatment" bin.
+
+3.  **Computing the P-Value:**
+    The class repeats this hierarchical shuffling thousands of times (e.g., `n_bootstraps=1000`).
+    * It counts how many times the shuffled groups produced a difference (KS statistic) as large or larger than the robust observed statistic calculated in Step 1.
+This ensures that the p-value reflects the probability of seeing such a difference *given the number of independent groups (subjects)*, not the number of total observations.
+
