@@ -25,7 +25,7 @@ Standard statistical tests (like the standard KS test) assume that every data po
 
 This inflation of the effective sample size is called **pseudoreplication**. It causes standard tests to return artificially low p-values, leading you to detect significant differences that don't actually exist (False Positives).
 
-## 3. The Solution: `NestedKS` Class
+## 3. The Solution: `HierarchicalPermutationTest` Class
 
 The `HierarchicalPermutationTest` class implements a **hierarchical resampling (permutation) test** to calculate a valid p-value that respects the grouped structure of your data.
 
@@ -40,12 +40,12 @@ The `HierarchicalPermutationTest` class implements a **hierarchical resampling (
 2.  **Hierarchical Resampling (Permutation):**
     To test if this difference is significant, we need a null distribution (what the difference would look like by random chance).
     * **Standard Shuffling:** A standard test shuffles all *observations* randomly. This destroys the group structure.
-    * **Hierarchical Shuffling:** The `NestedKS` class shuffles the **Class Labels** (e.g., the Subject IDs) rather than the individual observations.
+    * **Hierarchical Shuffling:** The `HierarchicalPermutationTest` class shuffles the **Class Labels** (e.g., the Subject IDs) rather than the individual observations.
         * It keeps all observations from "Subject A" together.
         * It randomly assigns the *entire* "Subject A" group to either the "Control" or "Treatment" bin.
 
 3.  **Computing the P-Value:**
-    The class repeats this hierarchical shuffling thousands of times (e.g., `n_bootstraps=1000`).
+    The class repeats this hierarchical shuffling thousands of times.
     * It counts how many times the shuffled groups produced a difference (KS statistic) as large or larger than the robust observed statistic calculated in Step 1.
 This ensures that the p-value reflects the probability of seeing such a difference *given the number of independent groups (subjects)*, not the number of total observations.
 
