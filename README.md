@@ -4,9 +4,7 @@ A Python package for performing a Hierarchical (Nested) Kolmogorov-Smirnov Test.
 ## 1. Conceptual Background
 
 ### The Kolmogorov-Smirnov (KS) Test
-The **Kolmogorov-Smirnov test** is a non-parametric method used to determine if two datasets differ significantly in their underlying distributions. Conceptually, it works by plotting the **Empirical Cumulative Distribution Function (ECDF)** for both datasets—essentially a curve showing the proportion of data points below any given value.
-
-The test statistic ($D$) is simply the **maximum vertical distance** between these two curves. If $D$ is large, the distributions are likely different.
+The **Kolmogorov-Smirnov test** is a non-parametric method used to determine if two datasets differ significantly in their underlying distributions. Conceptually, it works by plotting the **Empirical Cumulative Distribution Function (ECDF)** for both datasets. The test statistic ($D$) is simply the **maximum vertical distance** between these two curves. If $D$ is large, the distributions are likely different.
 
 ### The Anderson-Darling (AD) Test
 The **Anderson-Darling test** is a modification of the KS test. While the KS test looks only at the *maximum* distance (which often happens near the median/center of the distribution), the Anderson-Darling test uses a weighted distance that places more emphasis on the **tails** (the extremes) of the distribution. It is often more sensitive to differences in the start or end of the distributions.
