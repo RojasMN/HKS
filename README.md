@@ -47,7 +47,5 @@ The `HierarchicalPermutationTest` class implements a **hierarchical resampling (
 3.  **Computing the P-Value:**
     The class repeats this hierarchical shuffling thousands of times (e.g., `n_bootstraps=1000`).
     * It counts how many times the shuffled groups produced a difference (KS statistic) as large or larger than the robust observed statistic calculated in Step 1.
-
-This ensures that the p-value reflects the probability of seeing such a difference *given the number of independent groups (subjects)*, not the number of total observations.
 This ensures that the p-value reflects the probability of seeing such a difference *given the number of independent groups (subjects)*, not the number of total observations.
 
