@@ -236,7 +236,7 @@ generate_hierarchical_data <- function(n_basal,
 
 # Generating the simulated dataframe
 p_basal <- list(mean = 0.5, sigma = 0.3)
-p_treatment <- list(mean = 0.5, sigma = 0.35)
+p_treatment <- list(mean = 0.5, sigma = 0.32)
 
 df1 <- generate_hierarchical_data(
   n_basal = 12,
@@ -252,8 +252,8 @@ hks_result <- hierarchical_permutation_test(df = df1,
                                             cell_col = 'subunit',
                                             group_col = 'group',
                                             metric = 'ks',
-                                            n_resamples = 2000,
-                                            n_permutations = 2000,
+                                            n_resamples = 1000,
+                                            n_permutations = 1000,
                                             replace = TRUE,
                                             seed = 123)
 
@@ -266,8 +266,8 @@ had_result <- hierarchical_permutation_test(df = df1,
                                             cell_col = 'subunit',
                                             group_col = 'group',
                                             metric = 'ad',
-                                            n_resamples = 2000,
-                                            n_permutations = 2000,
+                                            n_resamples = 1000,
+                                            n_permutations = 1000,
                                             replace = TRUE,
                                             seed = 123)
 
