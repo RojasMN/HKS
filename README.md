@@ -40,7 +40,7 @@ Your input data should be a long-format table (CSV or Pandas DataFrame) with the
 > [!NOTE]
 > The statistical procedures in this package account for the nested nature of the data. In the provided `data_example.csv`, subjects contain between 10 and 56 subunits, and each subunit contains between 25 and 200 individual observations, demonstrating the package's ability to handle highly unbalanced datasets.
 
-## 3.. The Problem: Pseudoreplication in Nested Data
+## 3. The Problem: Pseudoreplication in Nested Data
 
 Standard statistical tests (like the standard KS test) assume that every data point is **independent**. However, in biological and scientific data, this is often false.
 
